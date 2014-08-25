@@ -1,4 +1,11 @@
-jinny-smpp
-==========
+# Jinny SMPP Java charset
 
-Java charset for Jinny SMSC SMPP
+This Java charset implements the encoding and decoding of the default alphabet in SMPP messages for the Jinny SMSC. The alphabet holds all GSM 03.38 characters. Some characters are mapped to similar characters for convenience, when the are not part of the GSM 7-bit alphabet.
+
+The source is the Jinny Short Message Service Centre 3.6.11 (SMSC Translation Table par 15.5).
+
+## Usage
+Build the jar, and place the generated jar in your Java classpath. The charset name is SMPP-JINNY. 
+
+## Author
+The author is pim.moerenhout(at)gmail.com.
