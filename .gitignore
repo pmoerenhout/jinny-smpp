@@ -1,0 +1,20 @@
+# Maven build files
+target/
+
+# Eclipse project files
+.classpath
+.project
+.settings
+.externalToolBuilders
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# IntelliJ plugin files
+atlassian-ide-plugin.xml
+
+# Mac OSX
+*.DS_Store
