@@ -1,24 +1,3 @@
-/*
- *  Copyright © 2005-2012 Amichai Rothman
- *
- *  This file is part of JCharset - the Java Charset package.
- *
- *  JCharset is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  JCharset is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with JCharset.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  For additional info see http://www.freeutils.net/source/jcharset/
- */
-
 package com.jinny.smpp.charset;
 
 import java.nio.charset.Charset;
@@ -29,8 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-
-import com.sun.istack.internal.Nullable;
 
 /**
  * The <b>CharsetProvider</b> class is a Charset Provider implementation.

@@ -26,17 +26,9 @@ public class SmppJinny extends Charset {
     return new Encoder(this);
   }
 
-//  public String getDecoderSingleByteMappings() {
-//    return Decoder.byteToCharTable;
-//  }
-
   public String getEncoderIndex2() {
     return Encoder.index2;
   }
-
-//  public short[] getEncoderIndex1() {
-//    return Encoder.index1;
-//  }
 
   private static class Decoder extends SingleByteDecoder {
 
