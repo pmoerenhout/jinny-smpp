@@ -1,5 +1,6 @@
-# Maven build files
+# maven build files
 target/
+dependency-reduced-pom.xml
 
 # Eclipse project files
 .classpath
@@ -7,14 +8,15 @@ target/
 .settings
 .externalToolBuilders
 
-# IntelliJ project files
+# Intellij project files
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# IntelliJ plugin files
+# Intellij plugin files
 atlassian-ide-plugin.xml
 
-# Mac OSX
+# MAC_OSX
 *.DS_Store
+*.log
