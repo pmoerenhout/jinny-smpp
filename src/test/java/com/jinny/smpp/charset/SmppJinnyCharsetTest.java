@@ -17,9 +17,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SmppJinnyTest {
+public class SmppJinnyCharsetTest {
 
-  final String CHARSET_NAME = "SMPP-JINNY";
+  final String CHARSET_NAME = "X-SMPP-JINNY";
 
   // http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/nio/cs/ISO_8859_2.java/?v=source
 
@@ -42,6 +42,9 @@ public class SmppJinnyTest {
   @Test
   public void testAliases() throws Exception {
     Set<String> aliases = new HashSet<String>();
+    aliases.add("x-smpp-jinny");
+    aliases.add("smpp-jinny");
+    aliases.add("smppjinny");
     assertEquals(aliases, charset.aliases());
   }
 
@@ -280,9 +283,9 @@ public class SmppJinnyTest {
     assertArrayEquals(new byte[]{ (byte) 160 }, encode('\u00A0'));
     //assertArrayEquals(new byte[]{ (byte) 161 }, encode('\u00A1')); // See 184
     assertArrayEquals(new byte[]{ (byte) 162 }, encode('\u00A2'));
-    assertArrayEquals(new byte[]{ (byte) 163 }, encode('£')); // See 175
-    assertArrayEquals(new byte[]{ (byte) 164 }, encode('¤')); // see 186
-    assertArrayEquals(new byte[]{ (byte) 165 }, encode('¥'));
+    //assertArrayEquals(new byte[]{ (byte) 163 }, encode('£')); // See 175
+    //assertArrayEquals(new byte[]{ (byte) 164 }, encode('¤')); // see 186
+    //assertArrayEquals(new byte[]{ (byte) 165 }, encode('¥'));
     assertArrayEquals(new byte[]{ (byte) 166 }, encode('\u00A6'));
     //assertArrayEquals(new byte[]{ (byte) 167 }, encode('\u00A7')); // See 189
     assertArrayEquals(new byte[]{ (byte) 168 }, encode('\u00A8'));
@@ -292,7 +295,7 @@ public class SmppJinnyTest {
     assertArrayEquals(new byte[]{ (byte) 172 }, encode('\u00AC'));
     assertArrayEquals(new byte[]{ (byte) 173 }, encode('\u00AD'));
     assertArrayEquals(new byte[]{ (byte) 174 }, encode('\u00AE'));
-    //assertArrayEquals(new byte[]{ (byte) 175 }, encode('£'));
+    assertArrayEquals(new byte[]{ (byte) 175 }, encode('£')); // See 167
     assertArrayEquals(new byte[]{ (byte) 176 }, encode('°'));
     assertArrayEquals(new byte[]{ (byte) 177 }, encode('±'));
     assertArrayEquals(new byte[]{ (byte) 178 }, encode('²'));
@@ -303,13 +306,13 @@ public class SmppJinnyTest {
     //assertArrayEquals(new byte[]{ (byte) 183 }, encode('ñ')); // see 241
     assertArrayEquals(new byte[]{ (byte) 184 }, encode('¡'));
     //assertArrayEquals(new byte[]{ (byte) 185 }, encode('¿')); /see 191
-    //assertArrayEquals(new byte[]{ (byte) 186 }, encode('¤'));
+    assertArrayEquals(new byte[]{ (byte) 186 }, encode('¤'));
     assertArrayEquals(new byte[]{ (byte) 187 }, encode('»'));
     //assertArrayEquals(new byte[]{ (byte) 188 }, encode('¥'));
     assertArrayEquals(new byte[]{ (byte) 189 }, encode('§'));
     assertArrayEquals(new byte[]{ (byte) 190 }, encode('¾'));
     assertArrayEquals(new byte[]{ (byte) 191 }, encode('¿'));
-    assertArrayEquals(new byte[]{ (byte) 192 }, encode('À')); // See 200
+    //assertArrayEquals(new byte[]{ (byte) 192 }, encode('À')); // See 200
     assertArrayEquals(new byte[]{ (byte) 193 }, encode('Á'));
     assertArrayEquals(new byte[]{ (byte) 194 }, encode('Â'));
     assertArrayEquals(new byte[]{ (byte) 195 }, encode('Ã'));
@@ -317,7 +320,7 @@ public class SmppJinnyTest {
     //assertArrayEquals(new byte[]{ (byte) 197 }, encode('É')); // See 220
     //assertArrayEquals(new byte[]{ (byte) 198 }, encode('Æ')); // See 211
     assertArrayEquals(new byte[]{ (byte) 199 }, encode('Ç'));
-    //assertArrayEquals(new byte[]{ (byte) 200 }, encode('À'));
+    assertArrayEquals(new byte[]{ (byte) 200 }, encode('À'));
     //assertArrayEquals(new byte[]{ (byte) 201 }, encode('è')); // See 232
     //assertArrayEquals(new byte[]{ (byte) 202 }, encode('ò')); // See 242
     //assertArrayEquals(new byte[]{ (byte) 203 }, encode('ù')); // See 249
@@ -357,7 +360,7 @@ public class SmppJinnyTest {
     assertArrayEquals(new byte[]{ (byte) 239 }, encode('ï'));
     assertArrayEquals(new byte[]{ (byte) 240 }, encode('ð'));
     // similar to Eth character
-    assertArrayEquals(new byte[]{ (byte) 68 }, encode('Ð'));
+    //assertArrayEquals(new byte[]{ (byte) 68 }, encode('Ð'));
     assertArrayEquals(new byte[]{ (byte) 241 }, encode('ñ'));
     assertArrayEquals(new byte[]{ (byte) 242 }, encode('ò'));
     assertArrayEquals(new byte[]{ (byte) 243 }, encode('ó'));
@@ -606,11 +609,12 @@ public class SmppJinnyTest {
       CharsetEncoder isoEncoder = iso.newEncoder();
 
       try {
+        isoEncoder.reset();
         ByteBuffer bb = isoEncoder.encode(CharBuffer.wrap(new char[]{ c }));
       }
       catch (CharacterCodingException e) {
         System.out.println(
-            "ISO-8559-1 " + c + " " + "  " + String.format("%04X", (long) c) + " exception: " + e.getMessage());
+            "ISO-8559-1 " + i + " " + c + " " + String.format("%04X", (long) c) + " exception: " + e.getMessage());
       }
 
       if ((byte) i != bytes[0]) {
@@ -621,52 +625,53 @@ public class SmppJinnyTest {
     }
   }
 
-  @Test
-  public void testIndex2() throws Exception {
-    String index2 = ((SmppJinny) charset).getEncoderIndex2();
-    final int index2length = index2.length();
-    int notNull = 0;
-
-    for (int i = 0; i < index2length; i++) {
-      final char c = index2.charAt(i);
-      final char cTest;
-      if (c != '\u0000') {
-        notNull++;
-        byte high = 0x00;
-        switch (i / 256) {
-          case 0:
-            break;
-          case 1:
-            high = 0x03;
-            break;
-          case 2:
-            high = 0x20;
-            break;
-          default:
-            assertTrue("Invalid index " + i, true);
-        }
-        cTest = (char) ((high << 8) + ((long) i & 0xff));
-        byte[] bytes = encode(cTest);
-        char cDecoded = decode(bytes);
-        System.out
-            .println("[" + String.format("%04X", i) + "][" + String.format("%04d", i) + " ] char is " + String
-                .format("\\u%04X", (long) c) + " " + String
-                .format("\\u%04X", (long) cTest) + " => " + cTest + " " + String
-                .format("%02X", bytes[0]) + " => " + cDecoded + " {" + String
-                .format("\\u%04X", (long) cDecoded) + "}");
-        if (cTest != cDecoded) {
-          System.out.println("*******");
-        }
-      }
-    }
-    System.out.println("Not null " + notNull + ", total " + index2length);
-  }
-
+//  @Test
+//  public void testIndex2() throws Exception {
+//    String index2 = ((SmppJinny) charset).getEncoderIndex2();
+//    final int index2length = index2.length();
+//    int notNull = 0;
+//
+//    for (int i = 0; i < index2length; i++) {
+//      final char c = index2.charAt(i);
+//      final char cTest;
+//      if (c != '\u0000') {
+//        notNull++;
+//        byte high = 0x00;
+//        switch (i / 256) {
+//          case 0:
+//            break;
+//          case 1:
+//            high = 0x03;
+//            break;
+//          case 2:
+//            high = 0x20;
+//            break;
+//          default:
+//            assertTrue("Invalid index " + i, true);
+//        }
+//        cTest = (char) ((high << 8) + ((long) i & 0xff));
+//        byte[] bytes = encode(cTest);
+//        char cDecoded = decode(bytes);
+//        System.out
+//            .println("[" + String.format("%04X", i) + "][" + String.format("%04d", i) + " ] char is " + String
+//                .format("\\u%04X", (long) c) + " " + String
+//                .format("\\u%04X", (long) cTest) + " => " + cTest + " " + String
+//                .format("%02X", bytes[0]) + " => " + cDecoded + " {" + String
+//                .format("\\u%04X", (long) cDecoded) + "}");
+//        if (cTest != cDecoded) {
+//          System.out.println("*******");
+//        }
+//      }
+//    }
+//    System.out.println("Not null " + notNull + ", total " + index2length);
+//  }
 
   byte[] encode(char c) {
     try {
       ByteBuffer bb = encoder.encode(CharBuffer.wrap(new char[]{ c }));
-      return bb.array();
+      byte[] ba = new byte[bb.limit()];
+      bb.get(ba);
+      return ba;
     }
     catch (CharacterCodingException e) {
       e.printStackTrace();
@@ -677,7 +682,8 @@ public class SmppJinnyTest {
   char decode(byte[] bytes) {
     try {
       CharBuffer charBuffer = decoder.decode(ByteBuffer.wrap(bytes));
-      char[] ca = charBuffer.array();
+      char[] ca = new char[charBuffer.limit()];
+      charBuffer.get(ca);
       assertEquals(1, ca.length);
       return ca[0];
     }

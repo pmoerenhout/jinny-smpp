@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class CharsetProvider extends java.nio.charset.spi.CharsetProvider {
 
-  static Map name2charset;
-  static Collection charsets;
+  static Map<String, Charset> name2charset;
+  static Collection<Charset> charsets;
 
   /**
    * Retrieves a charset for the given charset name. </p>
@@ -34,10 +34,10 @@ public class CharsetProvider extends java.nio.charset.spi.CharsetProvider {
     }
 
     // get charset instance for given name (case insensitive)
-    Charset c = (Charset) name2charset.get(charsetName.toUpperCase(Locale.US));
+    Charset c = name2charset.get(charsetName.toUpperCase(Locale.US));
     if (c != null) {
       try {
-        return (Charset) c.getClass().newInstance();
+        return c.getClass().newInstance();
       }
       catch (Exception ignore) {
         // if we can't create an instance, we don't
@@ -66,8 +66,7 @@ public class CharsetProvider extends java.nio.charset.spi.CharsetProvider {
    */
   void init() {
     // prepare supported charsets
-    Charset[] cs = new Charset[]{
-        new SmppJinny() };
+    Charset[] cs = new Charset[]{ new SmppJinnyCharset() };
 
     // initialize charset collection
     charsets = Collections.unmodifiableCollection(Arrays.asList(cs));
