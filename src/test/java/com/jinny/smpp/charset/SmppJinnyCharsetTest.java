@@ -23,9 +23,9 @@ public class SmppJinnyCharsetTest {
 
   // http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/7u40-b43/sun/nio/cs/ISO_8859_2.java/?v=source
 
-  Charset charset;
-  CharsetDecoder decoder;
-  CharsetEncoder encoder;
+  private Charset charset;
+  private CharsetDecoder decoder;
+  private CharsetEncoder encoder;
 
   @Before
   public void setUp() throws Exception {
