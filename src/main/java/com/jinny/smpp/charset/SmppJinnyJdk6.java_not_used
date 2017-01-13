@@ -8,14 +8,14 @@ import sun.nio.cs.SingleByteDecoder;
 import sun.nio.cs.SingleByteEncoder;
 import sun.nio.cs.US_ASCII;
 
-public class SmppJinny extends Charset {
+public class SmppJinnyJdk6 extends Charset {
 
-  public SmppJinny() {
+  public SmppJinnyJdk6() {
     super("SMPP-JINNY", new String[]{ });
   }
 
   public boolean contains(Charset cs) {
-    return ((cs instanceof US_ASCII) || (cs instanceof SmppJinny));
+    return ((cs instanceof US_ASCII) || (cs instanceof SmppJinnyJdk6));
   }
 
   public CharsetDecoder newDecoder() {
@@ -229,8 +229,6 @@ public class SmppJinny extends Charset {
         768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768,
         768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768,
     };
-
   }
-
 
 }
